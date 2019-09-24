@@ -1,0 +1,58 @@
+﻿@model MediaCollection.Models.Film.FilmCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>FilmCreateViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Titel" class="control-label"></label>
+                <input asp-for="Titel" class="form-control" />
+                <span asp-validation-for="Titel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Speelduur" class="control-label"></label>
+                <input asp-for="Speelduur" class="form-control" />
+                <span asp-validation-for="Speelduur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Beschrijving" class="control-label"></label>
+                <input asp-for="Beschrijving" class="form-control" />
+                <span asp-validation-for="Beschrijving" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Regisseurs" class="control-label"></label><p></p>
+                <select size="6" multiple asp-items="Model.Regisseurs" asp-for="SelectedRegisseurs"></select>
+                <input asp-for="RegisseurToevoegen" />
+                <input type="submit" value="Regisseur toevoegen" class="btn btn-secondary" asp-route-id="1" />
+            </div>
+            <div>
+               @for (int i = 1; i < Model.Genres.Count; i++)
+               {
+                   <input type="checkbox" asp-for="Genres[i].Checked"/>
+                   <label>@Model.Genres[i].Naam</label>
+                   <input hidden asp-for="Genres[i].Naam"/>
+               }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
