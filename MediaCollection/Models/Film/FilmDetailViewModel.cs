@@ -14,6 +14,15 @@ namespace MediaCollection.Models.Film
         public int Speelduur { get; set; }
         public List<string> Regisseurs { get; set; } = new List<string>();
         public List<string> Genres { get; set; } = new List<string>();
-        public List<FilmReview> Reviews { get; set; } = new List<FilmReview>();
+        public List<FilmReviewViewModel> Reviews { get; set; } = new List<FilmReviewViewModel>();
+        public byte[] Foto { get; set; }
+        public string ImageSource {
+            get
+            {
+                string mimeType = "png";
+                string base64 = Convert.ToBase64String(Foto);
+                return string.Format("data:{0};base64,{1}", mimeType, base64);
+            }
+        }
     }
 }

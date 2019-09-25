@@ -36,13 +36,23 @@
             <div class="form-group">
                 <label asp-for="Regisseurs" class="control-label"></label><p></p>
                 <select size="6" multiple asp-items="Model.Regisseurs" asp-for="SelectedRegisseurs"></select>
+                <input asp-for="RegisseurToevoegen" />
+                <input type="submit" value="Regisseur toevoegen" class="btn btn-secondary" asp-route-regisseur="true" />
             </div>
-            <div class="form-group">
-                <label asp-for="Genres" class="control-label"></label><p></p>
-                <select size="@Model.Genres.Count" multiple asp-items="Model.Genres" asp-for="SelectedGenre"></select>
+            <div class="input-group">
+                @for (int i = 0; i < Model.Genres.Count; i++)
+                {
+                    <input type="checkbox" asp-for="Genres[i].Checked" />
+                    <label>@Model.Genres[i].Naam</label>
+                    <input type="hidden" asp-for="Genres[i].Naam" />
+                    <input type="hidden" asp-for="Genres[i].Id" />
+                }
             </div>
+            <label asp-for="Foto"></label>
+            <img src="@Model.ImageSource" alt="@Model.Titel" />
+            <input asp-for="Foto"/>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" asp-route-regisseur="false" />
             </div>
         </form>
     </div>

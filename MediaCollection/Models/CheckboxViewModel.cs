@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaCollection.Domain.Muziek
+namespace MediaCollection.Models
 {
-    public class Album
+    public class CheckboxViewModel
     {
         public int Id { get; set; }
         public string Naam { get; set; }
-        public byte[] AlbumFoto { get; set; }
-        public ICollection<NummerAlbum> Nummers { get; set; }
+        public bool Checked { get; set; }
     }
 }

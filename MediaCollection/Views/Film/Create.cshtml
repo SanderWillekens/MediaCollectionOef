@@ -6,12 +6,10 @@
 }
 
 <h1>Create</h1>
-
-<h4>FilmCreateViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label>
@@ -32,18 +30,23 @@
                 <label asp-for="Regisseurs" class="control-label"></label><p></p>
                 <select size="6" multiple asp-items="Model.Regisseurs" asp-for="SelectedRegisseurs"></select>
                 <input asp-for="RegisseurToevoegen" />
-                <input type="submit" value="Regisseur toevoegen" class="btn btn-secondary" asp-route-id="1" />
+                <input type="submit" value="Regisseur toevoegen" class="btn btn-secondary" asp-route-regisseur="true" />
             </div>
-            <div>
-               @for (int i = 1; i < Model.Genres.Count; i++)
-               {
-                   <input type="checkbox" asp-for="Genres[i].Checked"/>
-                   <label>@Model.Genres[i].Naam</label>
-                   <input hidden asp-for="Genres[i].Naam"/>
-               }
+            <div class="input-group">
+                @for (int i = 0; i < Model.Genres.Count; i++)
+                {
+                    <input type="checkbox" asp-for="Genres[i].Checked" />
+                    <label>@Model.Genres[i].Naam</label>
+                    <input type="hidden" asp-for="Genres[i].Naam" />
+                    <input type="hidden" asp-for="Genres[i].Id" />
+                }
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Foto"></label>
+                <input class="form-control" asp-for="Foto" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" asp-route-regisseur="false"/>
             </div>
         </form>
     </div>

@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace MediaCollection.Models.Film
 {
-    public class CheckboxViewModel
+    public class FilmReviewViewModel
     {
-        public string Naam { get; set; }
-        public bool Checked { get; set; }
     }
 }

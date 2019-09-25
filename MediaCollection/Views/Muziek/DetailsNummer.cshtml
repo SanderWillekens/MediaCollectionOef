@@ -1,14 +1,14 @@
-﻿@model MediaCollection.Models.Film.FilmDetailViewModel
+﻿@model MediaCollection.Models.Muziek.NummerDetailViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "DetailsNummer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>DetailsNummer</h1>
 
 <div>
-    <h4>FilmDetailViewModel</h4>
+    <h4>NummerDetailViewModel</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -24,20 +24,19 @@
             @Html.DisplayFor(model => model.Beschrijving)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Speelduur)
+            @Html.DisplayNameFor(model => model.Speeltijd)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Speelduur)
+            @Html.DisplayFor(model => model.Speeltijd)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Regisseurs)
+            @Html.DisplayNameFor(model => model.Artisten)
         </dt>
         <dd class="col-sm-10">
-            @foreach (var item in Model.Regisseurs)
+            @foreach (var item in Model.Artisten)
             {
 
                 <p>@item</p>
-
             }
         </dd>
         <dt class="col-sm-2">
@@ -48,14 +47,7 @@
             {
 
                 <p>@item</p>
-
             }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Foto)
-        </dt>
-        <dd>
-            <img src="@Model.ImageSource" alt="@Model.Titel"/>
         </dd>
     </dl>
 </div>

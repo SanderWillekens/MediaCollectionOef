@@ -1,11 +1,13 @@
 ﻿using MediaCollection.Data;
 using MediaCollection.Domain.Film;
+using MediaCollection.Models;
 using MediaCollection.Models.Film;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,17 +50,20 @@ namespace MediaCollection.Controllers
             }
             foreach (var item in _context.GenreFilms)
             {
-                model.Genres.Add(new CheckboxViewModel() {Naam=item.Genrenaam});
+                model.Genres.Add(new CheckboxViewModel() {Naam=item.Genrenaam,Id=item.Id});
             }
             return View(model);
         }
         [HttpPost]
-        public IActionResult Create(FilmCreateViewModel model, int id)
+        public IActionResult Create(FilmCreateViewModel model, bool regisseur)
         {
-            if (id == 1)
+            if (regisseur == true)
             {
-                _context.Regisseurs.Add(new Regisseur() { Naam = model.RegisseurToevoegen });
-                _context.SaveChanges();
+                if (string.IsNullOrEmpty(model.RegisseurToevoegen))
+                {
+                    _context.Regisseurs.Add(new Regisseur() { Naam = model.RegisseurToevoegen });
+                    _context.SaveChanges();
+                }
                 return RedirectToAction("Create", model);
             }
             else
@@ -69,6 +74,11 @@ namespace MediaCollection.Controllers
                     Speelduur = model.Speelduur,
                     Beschrijving = model.Beschrijving
                 };
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    model.Foto.CopyTo(stream);
+                    film.Foto= stream.ToArray();
+                }
                 _context.Films.Add(film);
                 _context.SaveChanges();
                 foreach (var item in model.SelectedRegisseurs)
@@ -77,7 +87,7 @@ namespace MediaCollection.Controllers
                 }
                 foreach (var item in model.Genres.Where(x=>x.Checked==true))
                 {
-                    _context.FilmGenres.Add(new FilmGenre() { FilmId = film.Id});
+                    _context.FilmGenres.Add(new FilmGenre() { FilmId = film.Id,GenreId=item.Id});
                 }
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -91,6 +101,7 @@ namespace MediaCollection.Controllers
             model.Titel = filmFromDb.Titel;
             model.Beschrijving = filmFromDb.Beschrijving;
             model.Speelduur = filmFromDb.Speelduur;
+            model.Foto = filmFromDb.Foto;
             foreach (var item in filmFromDb.Regisseurs)
             {
                 model.Regisseurs.Add(_context.Regisseurs.FirstOrDefault(x => x.Id == item.RegisseurId).Naam);
@@ -99,7 +110,7 @@ namespace MediaCollection.Controllers
             {
                 model.Genres.Add(_context.GenreFilms.FirstOrDefault(y => y.Id == item.GenreId).Genrenaam);
             }
-            model.Reviews = filmFromDb.Reviews.ToList();
+            //model.Reviews = filmFromDb.Reviews.ToList();
             return View(model);
         }
         public IActionResult Delete(int id)
@@ -116,8 +127,9 @@ namespace MediaCollection.Controllers
             model.Speelduur = filmFromDb.Speelduur;
             model.Beschrijving = filmFromDb.Beschrijving;
             model.Titel = filmFromDb.Titel;
+            model.Foto = filmFromDb.Foto;
             model.Regisseurs = new List<SelectListItem>();
-            model.Genres = new List<SelectListItem>();
+            model.Genres = new List<CheckboxViewModel>();
             foreach (var item in _context.Regisseurs)
             {
                 model.Regisseurs.Add(new SelectListItem(item.Naam, item.Id.ToString()));
@@ -128,27 +140,53 @@ namespace MediaCollection.Controllers
             }
             foreach (var item in _context.GenreFilms)
             {
-                model.Genres.Add(new SelectListItem(item.Genrenaam, item.Id.ToString()));
+                model.Genres.Add(new CheckboxViewModel() { Id = item.Id, Naam = item.Genrenaam });
                 if (_context.FilmGenres.Where(x => x.FilmId == filmFromDb.Id).FirstOrDefault(y => y.GenreId == item.Id) != null)
                 {
-                    model.Genres.Last().Selected = true;
+                    model.Genres.Last().Checked = true;
                 }
             }
             return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(FilmEditViewModel model)
+        public IActionResult Edit(FilmEditViewModel model,bool regisseur)
         {
-            Film aanTePassenFilm = _context.Films.FirstOrDefault(x => x.Id == model.Id);
-            aanTePassenFilm.Speelduur = model.Speelduur;
-            aanTePassenFilm.Titel = model.Titel;
-            aanTePassenFilm.Beschrijving = model.Beschrijving;
-            _context.SaveChanges();
-            return RedirectToAction("Details", new { id = model.Id });
-        }
-        public IActionResult CreateRegisseur()
-        {
-            return View();
+            if (string.IsNullOrEmpty(model.RegisseurToevoegen))
+            {
+                if (model.RegisseurToevoegen != "")
+                {
+                    _context.Regisseurs.Add(new Regisseur() { Naam = model.RegisseurToevoegen });
+                    _context.SaveChanges();
+                }
+                return RedirectToAction("Create", model);
+            }
+            else
+            {
+                Film aanTePassenFilm = _context.Films.FirstOrDefault(x => x.Id == model.Id);
+                aanTePassenFilm.Speelduur = model.Speelduur;
+                aanTePassenFilm.Titel = model.Titel;
+                aanTePassenFilm.Beschrijving = model.Beschrijving;
+                if (model.FotoAanpassen != null)
+                {
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        model.FotoAanpassen.CopyTo(stream);
+                        aanTePassenFilm.Foto = stream.ToArray();
+                    }
+                }
+                _context.FilmGenres.RemoveRange(_context.FilmGenres.Where(x => x.FilmId == model.Id));
+                _context.FilmRegisseurs.RemoveRange(_context.FilmRegisseurs.Where(y => y.FilmId == model.Id));
+                foreach (var item in model.Genres.Where(c => c.Checked == true))
+                {
+                    _context.FilmGenres.Add(new FilmGenre() { FilmId = model.Id, GenreId = item.Id });
+                }
+                foreach (var item in model.SelectedRegisseurs)
+                {
+                    _context.FilmRegisseurs.Add(new FilmRegisseur() { FilmId = model.Id, RegisseurId = int.Parse(item) });
+                }
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = model.Id });
+            }
         }
     }
 }

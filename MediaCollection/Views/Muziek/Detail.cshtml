@@ -1,0 +1,47 @@
+﻿@model MediaCollection.Models.Muziek.AlbumDetailViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detail</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Naam)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Naam)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Foto)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.ImageSource" alt="@Model.Naam" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nummers)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Nummers)
+            {
+
+                <p>@item.Titel|@item.Score</p>
+                <p>
+                    @*@Html.ActionLink("Edit", "EditNummer", new { id = item.Id }) |*@
+                    @Html.ActionLink("Details", "DetailsNummer", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                </p>
+            }
+            </dd>
+
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Add nummer", "AddNummer", new { id = Model.Id }) |
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        <a asp-action="Index">Back to List</a>
+    </div>

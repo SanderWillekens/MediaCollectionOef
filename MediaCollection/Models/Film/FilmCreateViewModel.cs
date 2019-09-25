@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace MediaCollection.Models.Film
         public List<string> SelectedRegisseurs { get; set; } = new List<string>();
         public string RegisseurToevoegen { get; set; }
         public List<CheckboxViewModel> Genres { get; set; }
+        public IFormFile Foto { get; set; }
     }
 }
