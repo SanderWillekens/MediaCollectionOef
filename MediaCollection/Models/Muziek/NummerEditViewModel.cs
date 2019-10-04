@@ -11,22 +11,10 @@ namespace MediaCollection.Models.Muziek
     {
         public int Id { get; set; }
         public string Titel { get; set; }
-        public string Beschrijving { get; set; }
         public int Speelduur { get; set; }
         public string RegisseurToevoegen { get; set; }
-        public List<SelectListItem> Artisten { get; set; }
+        public List<SelectListItem> Artisten { get; set; } = new List<SelectListItem>();
         public List<string> SelectedArtisten { get; set; }
-        public List<CheckboxViewModel> Genres { get; set; }
-        public byte[] Foto { get; set; }
-        public IFormFile FotoAanpassen { get; set; }
-        public string ImageSource
-        {
-            get
-            {
-                string mimeType = "png";
-                string base64 = Convert.ToBase64String(Foto);
-                return string.Format("data:{0};base64,{1}", mimeType, base64);
-            }
-        }
+        public List<CheckboxViewModel> Genres { get; set; } = new List<CheckboxViewModel>();
     }
 }

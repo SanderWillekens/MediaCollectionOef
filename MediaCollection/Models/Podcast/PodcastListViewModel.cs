@@ -7,5 +7,8 @@ namespace MediaCollection.Models.Podcast
 {
     public class PodcastListViewModel
     {
+        public int Id { get; set; }
+        public string Titel { get; set; }
+        public string Host { get; set; }
     }
 }

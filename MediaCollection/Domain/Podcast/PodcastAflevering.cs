@@ -9,7 +9,7 @@ namespace MediaCollection.Domain.Podcast
     {
         public int Id { get; set; }
         public int PodcastId { get; set; }
-        public int GuestId { get; set; }
+        public string Guests { get; set; }
         public string Titel { get; set; }
         
     }

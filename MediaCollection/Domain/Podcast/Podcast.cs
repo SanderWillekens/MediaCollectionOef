@@ -9,6 +9,7 @@ namespace MediaCollection.Domain.Podcast
     {
         public int Id { get; set; }
         public string Titel { get; set; }
+        public string Host { get; set; }
         public ICollection<PodcastAuteur> PodcastAuteurs { get; set; }
         public ICollection<PodcastAflevering> PodcastAfleveringen { get; set; }
         public ICollection<PodcastAfspeellijst> PodcastAfspeellijsten { get; set; }

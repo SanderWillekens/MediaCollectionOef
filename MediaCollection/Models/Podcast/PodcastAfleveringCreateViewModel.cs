@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace MediaCollection.Models.Podcast
 {
-    public class PodcastEditViewModel
+    public class PodcastAfleveringCreateViewModel
     {
-        public int Id { get; set; }
+        public int PodcastId { get; set; }
+        public string Guests { get; set; }
         public string Titel { get; set; }
-        public string Host { get; set; }
     }
 }

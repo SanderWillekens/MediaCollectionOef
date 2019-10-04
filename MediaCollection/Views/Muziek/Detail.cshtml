@@ -31,9 +31,9 @@
 
                 <p>@item.Titel|@item.Score</p>
                 <p>
-                    @*@Html.ActionLink("Edit", "EditNummer", new { id = item.Id }) |*@
+                    @Html.ActionLink("Edit", "EditNummer", new { id = item.Id }) |
                     @Html.ActionLink("Details", "DetailsNummer", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteNummer", new { id = item.Id }) |
                 </p>
             }
             </dd>
@@ -41,7 +41,7 @@
         </dl>
     </div>
     <div>
-        @Html.ActionLink("Add nummer", "AddNummer", new { id = Model.Id }) |
+        @Html.ActionLink("Nummer toevoegen", "AddNummer", new { id = Model.Id }) |
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
         <a asp-action="Index">Back to List</a>
     </div>

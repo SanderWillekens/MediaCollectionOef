@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Serie\" />
-    <Folder Include="Views\Podcast\" />
   </ItemGroup>
 
 </Project>

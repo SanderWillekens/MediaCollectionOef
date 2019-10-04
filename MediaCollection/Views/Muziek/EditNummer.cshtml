@@ -1,0 +1,51 @@
+﻿@model MediaCollection.Models.Muziek.NummerEditViewModel
+
+@{
+    ViewData["Title"] = "EditNummer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EditNummer</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditNummer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Titel" class="control-label"></label>
+                <input asp-for="Titel" class="form-control" />
+                <span asp-validation-for="Titel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Speelduur" class="control-label"></label>
+                <input asp-for="Speelduur" class="form-control" />
+                <span asp-validation-for="Speelduur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Artisten" class="control-label"></label>
+                <select multiple asp-items="Model.Artisten" asp-for="SelectedArtisten"></select>
+            </div>
+            <div>
+                <label asp-for="Genres" class="control-label"></label>
+                @for (int i = 0; i < Model.Genres.Count; i++)
+                {
+                    <label>| @Model.Genres[i].Naam </label>
+                    <input type="checkbox" asp-for="Genres[i].Checked" />
+                    <input type="hidden" asp-for="Genres[i].Id" />
+                    <input type="hidden" asp-for="Genres[i].Naam" />
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

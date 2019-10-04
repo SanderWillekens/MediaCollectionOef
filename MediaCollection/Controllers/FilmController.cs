@@ -132,10 +132,11 @@ namespace MediaCollection.Controllers
             model.Genres = new List<CheckboxViewModel>();
             foreach (var item in _context.Regisseurs)
             {
-                model.Regisseurs.Add(new SelectListItem(item.Naam, item.Id.ToString()));
+                SelectListItem listItem = new SelectListItem(item.Naam, item.Id.ToString());
+                model.Regisseurs.Add(listItem);
                 if (_context.FilmRegisseurs.Where(x=>x.FilmId==filmFromDb.Id).FirstOrDefault(y=>y.RegisseurId==item.Id)!=null)
                 {
-                    model.Regisseurs.Last().Selected = true;
+                    listItem.Selected = true;
                 }
             }
             foreach (var item in _context.GenreFilms)

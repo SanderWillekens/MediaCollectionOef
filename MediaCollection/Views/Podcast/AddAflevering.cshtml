@@ -1,0 +1,35 @@
+﻿@model MediaCollection.Models.Podcast.PodcastAfleveringCreateViewModel
+
+@{
+    ViewData["Title"] = "AddAflevering";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddAflevering" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="PodcastId" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Titel" class="control-label"></label>
+                <input asp-for="Titel" class="form-control" />
+                <span asp-validation-for="Titel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Guests" class="control-label"></label>
+                <input asp-for="Guests" class="form-control" />
+                <span asp-validation-for="Guests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="AddAflevering" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -41,7 +41,6 @@ namespace MediaCollection.Data
         public DbSet<AfspeellijstPodcast> AfspeellijstPodcasts { get; set; }
         public DbSet<Auteur> Auteurs { get; set; }
         public DbSet<GehoordStatus> GehoordStatuses { get; set; }
-        public DbSet<Guest> Guests { get; set; }
         public DbSet<Podcast> Podcasts { get; set; }
         public DbSet<PodcastAflevering> PodcastAfleveringen { get; set; }
         public DbSet<PodcastAfspeellijst> PodcastAfspeellijsten { get; set; }

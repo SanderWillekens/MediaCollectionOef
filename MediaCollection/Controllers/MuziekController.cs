@@ -173,5 +173,53 @@ namespace MediaCollection.Controllers
             _context.SaveChanges();
             return RedirectToAction("Detail", new { id = albumId });
         }
+        public IActionResult EditNummer(int id)
+        {
+            Nummer nummerFromDb = _context.Nummers.Include(genre=>genre.NummerGenres).Include(artiest=>artiest.NummerArtiests).FirstOrDefault(x => x.Id == id);
+            NummerEditViewModel model = new NummerEditViewModel()
+            {
+                Id = nummerFromDb.Id,
+                Speelduur = nummerFromDb.Speeltijd,
+                Titel = nummerFromDb.Naam
+            };
+            foreach (var item in _context.Artiesten)
+            {
+                SelectListItem listItem = new SelectListItem(item.Naam, item.Id.ToString());
+                model.Artisten.Add(listItem);
+                if (_context.NummerArtiesten.Where(x=>x.NummerId==nummerFromDb.Id).FirstOrDefault(y=>y.ArtiestId==item.Id)!=null)
+                {
+                    listItem.Selected = true;
+                }
+            }
+            foreach (var item in _context.GenreNummers)
+            {
+                CheckboxViewModel checkbox = new CheckboxViewModel() { Id = item.Id, Naam = item.Naam };
+                model.Genres.Add(checkbox);
+                if (_context.NummerGenres.Where(x=>x.NummerId==nummerFromDb.Id).FirstOrDefault(y=>y.GenreId==item.Id)!=null)
+                {
+                    checkbox.Checked = true;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult EditNummer(NummerEditViewModel model)
+        {
+            Nummer nummerToEdit = _context.Nummers.Include(x=>x.NummerArtiests).Include(y=>y.NummerGenres).FirstOrDefault(x => x.Id == model.Id);
+            nummerToEdit.Naam = model.Titel;
+            nummerToEdit.Speeltijd = model.Speelduur;
+            _context.NummerGenres.RemoveRange(nummerToEdit.NummerGenres);
+            foreach (var item in model.Genres.Where(x=>x.Checked==true))
+            {
+                _context.NummerGenres.Add(new NummerGenre() { GenreId = item.Id, NummerId = model.Id });
+            }
+            _context.NummerArtiesten.RemoveRange(nummerToEdit.NummerArtiests);
+            foreach (var item in model.SelectedArtisten)
+            {
+                _context.NummerArtiesten.Add(new NummerArtiest() { ArtiestId = _context.Artiesten.FirstOrDefault(x => x.Id == int.Parse(item)).Id,NummerId=model.Id });
+            }
+            _context.SaveChanges();
+            return RedirectToAction("DetailsNummer",new { id=model.Id});
+        }
     }
 }
